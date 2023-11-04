@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/css" href="Release-Notes.css"?>
+<!DOCTYPE release-history PUBLIC "-//UniTime//UniTime Release Notes DTD/EN" "Release-Notes.dtd">
+<!--
+ * Licensed to The Apereo Foundation under one or more contributor license
+ * agreements. See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ *
+ * The Apereo Foundation licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at:
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ -->
+
+<release-history>
+
+<doc-title>UniTime 4.8 Release Notes</doc-title>
+<release>
+	<version>4.8.67</version>
+	<release-date>Fri, 6 Oct 2023</release-date>
+	<category>
+		<title>Course Timetabling</title>
+		<item>
+			<name>Instructor Survey</name>
+			<description>
+				<line>Added a new page (Instructor Survey) that can be used by instructors to fill in their preferences and course requirements.</line>
+				<line>To be enabled by the Instructor Survey toggle on the academic session status page (Status Types page).</line>
+				<line>See https://help48.unitime.org/instructor-survey for more details.</line>
+			</description>
+		</item>
+		<item>
+			<name>Instructional Offering Cross Lists</name>
+			<description>
+				<line>Fix the instructors and offering coordinators when the controlling department is changed.
+					<line>This means that each instructor/coordinator gets replaced with an instructor/coordinator from the controlling department with the matching external id.</line>
+					<line>An instructor/coordinator assignment gets deleted otherwise (the instructor has no external id or no matching instructor in the new controlling department).</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Instructional Offering Detail: Make NOT Offered</name>
+			<description>
+				<line>Departmental schedule mangers cannot make a course not offered when it has a class they cannot edit (e.g., there is an externally managed class that is being timetabled).</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Online Student Scheduling</title>
+		<item>
+			<name>Online Student Scheduling Dashboard: Advisor Recommendation</name>
+			<description>
+				<line>In the table showing the advisor recommendations for a student, added the following two columns:
+					<line>Advised: date and time when the line was added or modified last</line>
+					<line>Advisor: person who advised the student (who added/modified the line last)</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Course Finder, Online Scheduling Dashboard</name>
+			<description>
+				<line>When showing data direcly from the database (online scheduling server is not running)
+					<line>Correct date pattern formatting (using unitime.pattern.format.useDates property)</line>
+					<line>Include date pattern and required room for arrange hours classes</line>
+					<line>This applies to
+						<line>List of classes on the Course Finder dialog</line>
+						<line>Enrollments of a student on the online dashboard (Student dialog)</line>
+						<line>Classes listed on the Enrollments tab</line>
+					</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Course Finder: Filter</name>
+			<description>
+				<line>Course Finder dialog on the Scheduling Assistant, Course Requests, and Advisor Course Recommendations pages improved.</line>
+				<line>Added Filter section, which allows for filtering courses by:
+					<line>Class start/end date (given course must have an enrollment that does not start before the given From date, or lasts past the To date)</line>
+					<line>Min/max credit</line>
+					<line>Instructor name (given course must have a class with matching instructor name)</line>
+				</line>
+				<line>Notes:
+					<line>Classes that do not display instructors are not considered by the instructor filter.</line>
+					<line>Classes that are not enabled for student scheduling are ignored (both instructor and class dates filters).</line>
+					<line>The filter is ONLY used for the list of courses, it does not guarantee that the student gets a class with the given instructor or within the given dates.</line>
+					<line>When used on the Student Course Requests page or Advisor Course Recommendations page at the time when the schedule of classes has not been published yet,
+						only allow for credit filter (no filtering by class dates or instructor names until the schedule of classes is published).</line>
+				</line>
+			</description>
+		</item>
+		<item>
+			<name>Student Scheduling Dashboards: Show/Hide Columns</name>
+			<description>
+				<line>Added ability to show/hide columns on the dashboard tables (Enrollments, Students, and Change Log).</line>
+			</description>
+		</item>
+		<item>
+			<name>Student Scheduling Rules</name>
+			<description>
+				<line>Added student scheduling rules that can be used to define which courses a particular group of students can request/enroll in.These rules can be defined on Administration > Other > Student Scheduling Rules page.</line>
+				<line>A group of students can be a student filter (same format as on the dashboards, e.g., group:SpecialStudents or primary-major:%-OL).</line>
+				<line>Each group of students can be restricted to particular course types (provided using a regular expression, e.g., !No Pre-Reg),
+					course names (provided using a regular expression, e.g, .*[0-9]OL for all courses with OL suffix),
+					or instructional methods (provided using a regular expression, e.g., PO|PH for course configurations with PO or PH instructional methods).
+					<line>A course name or instructional method regular expression can be negated by using an exclamation mark as a prefix (e.g., !.*[0-9]OL for all courses without an OL suffix).</line>
+					<line>If multiple expressions are provided (e.g., both course and instructional method), depending on the mode of the rule, all of the expressions must match or just one.</line>
+				</line>
+				<line>Each rule can be restricted by a regular expression matching academic initiative, a regular expression matching term, start and end year.</line>
+				<line>The rules are processed in the given order.</line>
+				<line>For each student, the first matching rule is used (there are no course or instructional method restrictions when no rule applies).</line>
+				<line>A rule can apply only to filter (ability to lookup a course), online scheduling, and/or batch scheduling.Advisors and/or admins may be allowed to ignore the rule (there could be special courses that only advisors and/or admins can put the students in).</line>
+			</description>
+		</item>
+	</category>	
+	<category>
+		<title>Batch Student Scheduling</title>
+		<item>
+			<name>Solver Load: Replace Pending courses with Substitutes</name>
+			<description>
+				<line>Added ability to treat substitute course demands as primary when a primary course demand was skipped entirely due to one of the following reasons:
+					<line>pending override request (when Load.ReplacePendingWithSubstitute is true, defaults to false)</line>
+					<line>canceled override request (when Load.ReplaceCancelledWithSubstitute is true, defaults to false)</line>
+					<line>rejected override request (when Load.ReplaceRejectedWithSubstitute is true, defaults to false)</line>
+					<line>not offered course (when Load.ReplaceNotOfferedWithSubstitute is true, defaults to false)</line>
+				</line>
+				<line>More precisely, when a course demand is skipped (all its courses are skipped for some reason),
+					and at least one of the courses is skipped due to a reason that is enabled, then
+					<line>Take the top most substitute course demand and treat it as primary.</line>
+					<line>The position of the substitute course is kept (it shows at the bottom of the primary requests instead of at the top of the substitutes).</line>
+				</line>
+				<line>Course demands that do not allow for substitutes (Wait-List or No-Sub toggle is checked) are not replaced with a substitute.</line>
+			</description>
+		</item>
+		<item>
+			<name>Batch Student Solver Reports: Solution Statistics</name>
+			<description>
+				<line>Added Requested Courses - impossible row: percentage of requested courses that have no possible enrollment (e.g., due to having all classes disabled).</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Technology Upgrade</title>
+		<item>
+			<name>Hibernate 6.2 / JGroups 5.2</name>
+			<description>
+				<line>UniTime updated to use the latest versions of Hibernate 6.2 and JGroups 5.2.</line>
+				<line>Infinispan 14 is now used for second level cache and cache replication/invalidation when there are multiple web servers.</line>
+				<line>This, however, requires UniTime to use Java 11 or later (Java 8 is no longer supported).</line>
+			</description>
+		</item>
+	</category>
+	<category>
+		<title>Bug Fixes</title>
+		<item>
+			<name>Academic Sessions</name>
+			<description>
+				<line>Academic Session column: use academic year (instead of session start year) when identifying an academic session.</line>
+			</description>
+		</item>
+		<item>
+			<name>Examination PDF Reports, Enrollment Audit PDF Reports</name>
+			<description>
+				<line>Use academic year (instead of session start year) when naming an output file.</line>
+			</description>
+		</item>
+		<item>
+			<name>Instructor Detail</name>
+			<description>
+				<line>Previous/Next buttons on the Instructor Detail page: follow the order in which the instructors were listed on the Instructors page.
+					<line>Instead of using the default order (instructor names).</line>
+				</line>
+				<line>Also applies to Previous/Next buttons on the Edit Instructor, Instructor Assignment Preferences, and Instructor Preferences pages.</line>
+			</description>
+		</item>
+	</category>	
+</release>
+</release-history>
